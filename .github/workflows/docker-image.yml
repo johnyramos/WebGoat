@@ -7,7 +7,7 @@ on:
     branches: [ "johny-facens" ]
 
 jobs:
-  build:
+  build-and-run:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -20,3 +20,11 @@ jobs:
       run: ./mvnw clean install
     - name: Build the Docker image
       run: docker build  -f Dockerfile . -t webgoat/webgoat
+    - uses: docker/build-push-action@v2
+      with:
+        tags: webgoat/webgoat:latest
+        push: false
+    - uses: addnab/docker-run-action@v3
+      with:
+        image: webgoat/webgoat:latest
+        run: docker run -d -p 127.0.0.1:8080:8080 -p 127.0.0.1:9090:9090 webgoat/webgoat
