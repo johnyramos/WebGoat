@@ -18,7 +18,5 @@ jobs:
           distribution: 'zulu'
       - name: Build with Maven
         run: ./mvnw clean install
-      - name: Build the Docker image
-        run: docker build -f Dockerfile . -t webgoat/webgoat
-      - name: Run the Docker container
-        run: docker run -it -p 8080:8080 -p 9090:9090 webgoat/webgoat
+      - name: Run with Spring
+        run: java -jar webgoat-2023.8.jar --webgoat.port=8001 --webwolf.port=8002
