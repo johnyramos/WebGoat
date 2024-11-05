@@ -19,4 +19,4 @@ jobs:
       - name: Build with Maven
         run: ./mvnw clean install
       - name: Run with Spring
-        run: java -jar webgoat-2023.8.jar --webgoat.port=8001 --webwolf.port=8002
+        run: ./mvnw spring-boot:run
