@@ -1,0 +1,60 @@
+name: SonarCloud, Dependency-Check e OWASP ZAP para WebGoat
+
+on:
+  push:
+    branches: [ main, develop ]  # Execute em pushes para main e develop
+  pull_request:
+    branches: [ main, develop ]  # Execute em pull requests para main e develop
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # Necessário para o SonarCloud analisar todo o histórico do código
+
+      - name: Configurar JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: 17
+          distribution: 'temurin'
+
+      - name: Build WebGoat
+        run: mvn clean package  # Ou o comando de build apropriado para o WebGoat
+
+      - name: SonarCloud Analysis
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Necessário para pull requests
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}  # Token do SonarCloud
+        with:
+          projectKey: ${{ secrets.SONAR_PROJECT_KEY }}  # Chave do projeto no SonarCloud
+          organization: ${{ secrets.SONAR_ORGANIZATION_KEY }} # Organização no SonarCloud
+
+
+      - name: Dependency-Check
+        uses: dependency-check/dependency-check-action@v1
+        with:
+          scan-path: '.'  # Caminho para o projeto
+          format: 'ALL' # Formato do relatório (HTML, XML, etc.)
+          # Outras opções do Dependency-Check podem ser adicionadas aqui
+
+      - name: Iniciar WebGoat (Docker)
+        run: docker run -d -p 8080:8080 webgoat/webgoat-8.2  # Substitua pela versão correta do WebGoat
+
+      - name: Aguardar WebGoat iniciar
+        run: sleep 60 # Tempo para o WebGoat subir. Ajuste conforme necessário.
+
+      - name: OWASP ZAP Scan
+        uses: zaproxy/action-baseline@v0.7.0
+        with:
+          target: 'http://localhost:8080'  # URL da aplicação WebGoat
+          rules_file_name: '.zap/rules.tsv' # opcional - para usar um conjunto de regras específico
+          cmd_options: '-a' # Opções adicionais do ZAP (aqui, modo de ataque)
+
+      - name: Upload ZAP Report
+        uses: actions/upload-artifact@v3
+        with:
+          name: zap-report
+          path: zap-report.html
