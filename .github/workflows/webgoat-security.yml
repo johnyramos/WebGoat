@@ -1,4 +1,4 @@
-name: SonarCloud, Dependency-Check e OWASP ZAP para WebGoat
+name:webgoat-security
 
 on:
   push:
