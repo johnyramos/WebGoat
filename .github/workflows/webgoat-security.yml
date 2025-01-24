@@ -1,4 +1,4 @@
-name:webgoat-security
+name: webgoat-security
 
 on:
   push:
