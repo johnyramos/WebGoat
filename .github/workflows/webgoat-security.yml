@@ -61,13 +61,6 @@ jobs:
         rules_file_name: '.zap/rules.tsv'  # Arquivo de regras customizadas (opcional)
         cmd_options: '-config api.key=${{ secrets.ZAP_API_KEY }}' # Chave da API do ZAP (opcional)
 
-    - name: ZAP Report
-      if: always() # Executa mesmo se o scan falhar
-      uses: zaproxy/action-full-report@v0.4.1
-      with:
-        target: 'http://localhost:8080/WebGoat'
-        token: ${{ secrets.GITHUB_TOKEN }}
-        directory: './zap_report'
 
 
 # Substitua com as suas informações:
