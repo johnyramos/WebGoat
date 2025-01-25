@@ -58,13 +58,7 @@ jobs:
          path: ${{github.workspace}}/reports
         
     - name: Start WebGoat
-      run: mvn -pl webgoat-server spring-boot:start &> /dev/null &
-    
-    - name: Aguardar o WebGoat iniciar
-      uses: ufoscout/docker-compose-wait@v1
-      with:
-        timeout: 60
-        url: http://localhost:8080/WebGoat
+      run: mvn -pl webgoat-server spring-boot:start &> /dev/null & sleep 60
 
     - name: OWASP ZAP Scan
       uses: zaproxy/action-baseline@v0.14.0
