@@ -36,7 +36,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Necessário para o SonarCloud
         SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }} # Token do SonarCloud
-      run: mvn sonar:sonar -Dsonar.projectKey=johnyramos_WebGoat -Dsonar.organization='Johny Ramos - Pr3sc0tt' -Dsonar.host.url=https://sonarcloud.io
+      run: mvn sonar:sonar -Dsonar.projectKey=johnyramos_WebGoat -Dsonar.organization='jprescot' -Dsonar.host.url=https://sonarcloud.io
 
     - name: Dependency-Check
       uses: dependency-check/dependency-check_action@main
