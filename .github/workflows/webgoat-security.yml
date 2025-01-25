@@ -1,10 +1,10 @@
-name: webgoat-security
+name: CICD
 
 on:
   push:
-    branches: [ main, develop ]  # Execute em pushes para main e develop
+    branches: johny-facens  # Execute em pushes para main e develop
   pull_request:
-    branches: [ main, develop ]  # Execute em pull requests para main e develop
+    branches: johny-facens  # Execute em pull requests para main e develop
 
 jobs:
   build-and-test:
