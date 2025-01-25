@@ -34,7 +34,7 @@ jobs:
 
 
       - name: Dependency-Check
-        uses: dependency-check/dependency-check-action@v1
+        uses: dependency-check/Dependency-Check_Action@main
         with:
           scan-path: '.'  # Caminho para o projeto
           format: 'ALL' # Formato do relatório (HTML, XML, etc.)
